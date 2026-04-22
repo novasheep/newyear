@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Browser Routing Stack Lab - Professional Edition</title>
+    <style>
+        :root {
+            --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
+            --apple-gray: #f5f5f7;; 
+            /* #f5f5f7; */
+            --apple-blue: #007aff;
+            --border-color: #d2d2d7;
+            --pure-black: #000000;
+            --error-red: #ff3b30;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: var(--apple-font);
+            background-color: #ffffff;
+            /* var(--apple-gray) */
+            color: var(--pure-black);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 黄金比例全屏布局 */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            height: 100vh;
+            gap: 24px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        /* 栈面板容器 */
+        .stack-panel {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .stack-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--pure-black);
+            text-align: center;
+            /*text-transform: uppercase;*/
+            letter-spacing: 0.15em;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--pure-black);
+            padding-bottom: 12px;
+        }
+
+        /* 物理堆叠：新元素向上生长 */
+        .stack-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: flex-start;
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* 栈内砖块样式 */
+        .stack-item {
+            width: 100%;
+            background: white;
+            border: 2px solid var(--border-color);
+            padding: 16px 0;
+            border-radius: 14px;
+            text-align: center;
+            font-family: "SF Mono", "PingFang SC", monospace;
+            font-size: 18px;
+            /* 大字号确保演示清晰 */
+            font-weight: 700;
+            color: var(--pure-black);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: slideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* 浏览器模拟窗口 */
+        .safari-window {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Safari 顶部工具栏 */
+        .toolbar {
+            height: 60px;
+            background: linear-gradient(to bottom, #ffffff, #f1f1f2);
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            gap: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .traffic-lights {
+            display: flex;
+            gap: 8px;
+            width: 60px;
+        }
+
+        .light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .red {
+            background: #ff5f56;
+        }
+
+        .yellow {
+            background: #ffbd2e;
+        }
+
+        .green {
+            background: #27c93f;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn {
+            width: 38px;
+            height: 38px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pure-black);
+        }
+
+        .btn:hover:not(:disabled) {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .btn:disabled {
+            opacity: 0.1;
+        }
+
+        /* 交互式地址栏 */
+        .address-bar {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            height: 36px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            padding: 0 12px;
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .address-bar:focus-within {
+            border-color: var(--apple-blue);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        }
+
+        .address-bar.error {
+            border-color: var(--error-red);
+            background: #fff2f1;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .url-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: var(--pure-black);
+            text-align: center;
+            font-family: var(--apple-font);
+            font-weight: 500;
+            background: transparent;
+        }
+
+        /* 内部视图 */
+        .web-view {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #fafafc;
+            border-right: 1px solid #efeff0;
+            padding: 30px 12px;
+        }
+
+        .sidebar-item {
+            padding: 12px 20px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--pure-black);
+            transition: 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #f1f1f2;
+        }
+
+        .sidebar-item.active {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 80px 60px;
+            display: flex;
+            justify-content: center;
+            background: white;
+        }
+
+        .article {
+            max-width: 550px;
+            width: 100%;
+        }
+
+        .article h2 {
+            font-size: 50px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: -0.04em;
+        }
+
+        .article .desc-box {
+            font-family: var(--apple-font);
+            font-size: 24px;
+            line-height: 1.6;
+            color: var(--pure-black);
+            background: var(--apple-gray);
+            padding: 26px;
+            border-radius: 18px;
+            border-left: 6px solid var(--apple-blue);
+            font-weight: 600;
+        }
+
+        .empty-hint {
+            margin: auto;
+            font-size: 14px;
+            color: #a1a1a6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <!-- 左侧：backStack -->
+        <div class="stack-panel">
+            <div class="stack-label">backStack (历史栈)</div>
+            <div id="backStackView" class="stack-body"></div>
+        </div>
+
+        <!-- 浏览器核心 -->
+        <div class="safari-window">
+            <div class="toolbar">
+                <div class="traffic-lights">
+                    <div class="light red"></div>
+                    <div class="light yellow"></div>
+                    <div class="light green"></div>
+                </div>
+                <div class="nav-controls">
+                    <button class="btn" id="backBtn" onclick="router.back()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button class="btn" id="forwardBtn" onclick="router.forward()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div class="address-bar" id="addressBarWrapper">
+                    <!-- 增加了 onblur 事件：失去焦点时重置为当前正确 URL -->
+                    <input type="text" class="url-input" id="urlInput" spellcheck="false" onclick="this.select()"
+                        onblur="router.resetUrlDisplay()"
+                        onkeydown="if(event.key === 'Enter') router.handleUrlSubmit(this.value)">
+                    <button class="btn" style="width:24px" onclick="router.reset()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6"></path>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="web-view">
+                <div class="sidebar">
+                    <div class="sidebar-item" onclick="router.visit('home')" id="menu-home">首页</div>
+                    <div class="sidebar-item" onclick="router.visit('first')" id="menu-first">页面一</div>
+                    <div class="sidebar-item" onclick="router.visit('second')" id="menu-second">页面二</div>
+                    <div class="sidebar-item" onclick="router.visit('third')" id="menu-third">页面三</div>
+                </div>
+                <div class="content-area">
+                    <div id="article" class="article"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧：forwardStack -->
+        <div class="stack-panel">
+            <div class="stack-label">forwardStack (前进栈)</div>
+            <div id="forwardStackView" class="stack-body"></div>
+        </div>
+    </div>
+
+    <script>
+        const PAGE_NAMES = {
+            'home': '首页',
+            'first': '页面一',
+            'second': '页面二',
+            'third': '页面三'
+        };
+
+        class BrowserSimulator {
+            constructor() {
+                this.currentPage = 'home';
+                this.backStack = [];
+                this.forwardStack = [];
+                this.lastAction = 'init';   // 记录最后一次行为
+                this.lastFrom = null;       // 记录跳转来源
+                this.render();
+            }
+
+            // ========== 动态描述生成器 ==========
+            generateDescription() {
+                let desc = '';
+
+                if (this.lastAction === 'init') {
+                    desc = '历史栈和前进栈都为空。';
+                }
+
+                if (this.lastAction === 'visit') {
+                    desc += `路由'/${this.lastFrom}'入栈历史栈。<br>`;
+                    desc += `前进栈被清空。`;
+                }
+
+                if (this.lastAction === 'back') {
+                    desc += `路由'/${this.lastFrom}'入栈前进栈。<br>`;
+                    desc += `路由'/${this.currentPage}'从历史栈出栈。`;
+                }
+
+                if (this.lastAction === 'forward') {
+                    desc += `路由'/${this.lastFrom}'入栈历史栈。<br>`;
+                    desc += `路由'/${this.currentPage}'从前进栈出栈。`;
+                }
+
+                if (this.lastAction === 'reset') {
+                    desc = '浏览器被重置，历史栈和前进栈清空。';
+                }
+
+                return desc;
+            }
+
+            // ========== 访问新页面 ==========
+            visit(id) {
+                if (this.currentPage === id) return;
+
+                this.lastFrom = this.currentPage;
+                this.lastAction = 'visit';
+
+                this.backStack.push(this.currentPage);
+                this.forwardStack = [];
+                this.currentPage = id;
+
+                this.render();
+            }
+
+            // ========== 地址栏 ==========
+            handleUrlSubmit(inputVal) {
+                const slug = inputVal.split('/').pop().toLowerCase();
+                if (PAGE_NAMES[slug]) {
+                    this.visit(slug);
+                    document.getElementById('urlInput').blur();
+                } else {
+                    this.showError();
+                }
+            }
+
+            resetUrlDisplay() {
+                const input = document.getElementById('urlInput');
+                input.value = `http://localhost/${this.currentPage}`;
+            }
+
+            showError() {
+                const wrapper = document.getElementById('addressBarWrapper');
+                wrapper.classList.add('error');
+                setTimeout(() => {
+                    wrapper.classList.remove('error');
+                    this.resetUrlDisplay();
+                }, 400);
+            }
+
+            // ========== 后退 ==========
+            back() {
+                if (this.backStack.length > 0) {
+
+                    this.lastFrom = this.currentPage;
+                    this.lastAction = 'back';
+
+                    this.forwardStack.push(this.currentPage);
+                    this.currentPage = this.backStack.pop();
+
+                    this.render();
+                }
+            }
+
+            // ========== 前进 ==========
+            forward() {
+                if (this.forwardStack.length > 0) {
+
+                    this.lastFrom = this.currentPage;
+                    this.lastAction = 'forward';
+
+                    this.backStack.push(this.currentPage);
+                    this.currentPage = this.forwardStack.pop();
+
+                    this.render();
+                }
+            }
+
+            // ========== 重置 ==========
+            reset() {
+                this.currentPage = 'home';
+                this.backStack = [];
+                this.forwardStack = [];
+                this.lastAction = 'reset';
+                this.lastFrom = null;
+
+                this.render();
+            }
+
+            // ========== 渲染 ==========
+            render() {
+                const pageName = PAGE_NAMES[this.currentPage];
+
+                this.resetUrlDisplay();
+
+                document.getElementById('article').innerHTML = `
+                <h2>${pageName}</h2>
+                <div class="desc-box">
+                    当前路由：/${this.currentPage} <br><br>
+                    ${this.generateDescription()}
+                </div>
+            `;
+
+                document.querySelectorAll('.sidebar-item').forEach(el => {
+                    el.classList.remove('active');
+                    if (el.id === `menu-${this.currentPage}`)
+                        el.classList.add('active');
+                });
+
+                document.getElementById('backBtn').disabled =
+                    this.backStack.length === 0;
+                document.getElementById('forwardBtn').disabled =
+                    this.forwardStack.length === 0;
+
+                this.renderVisualStack('backStackView', this.backStack);
+                this.renderVisualStack('forwardStackView', this.forwardStack);
+            }
+
+            renderVisualStack(viewId, stackData) {
+                const container = document.getElementById(viewId);
+                container.innerHTML = '';
+
+                if (stackData.length === 0) {
+                    container.innerHTML =
+                        '<div class="empty-hint">Empty Stack</div>';
+                    return;
+                }
+
+                stackData.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'stack-item';
+                    el.innerText = `/${item}`;
+                    container.appendChild(el);
+                });
+            }
+        }
+
+        const router = new BrowserSimulator();
+    </script>
+
+</body>
+
+</html>
