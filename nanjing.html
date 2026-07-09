@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 南京浪漫之旅 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 30%, #e8eaf6 60%, #e0f2f1 100%);
+            color: #333;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* 顶部横幅 */
+        .hero {
+            background: linear-gradient(135deg, #ec407a, #ab47bc, #7e57c2);
+            color: white;
+            text-align: center;
+            padding: 60px 20px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '🌸';
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.15;
+            top: -20px;
+            left: 10%;
+            animation: float 6s ease-in-out infinite;
+        }
+        .hero::after {
+            content: '🏮';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.15;
+            bottom: -10px;
+            right: 10%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        .hero h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .hero p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 概览卡片 */
+        .overview-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        .overview-card h2 {
+            color: #ec407a;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .overview-item {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .overview-item .icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        .overview-item .label {
+            font-size: 0.85em;
+            color: #888;
+        }
+        .overview-item .value {
+            font-weight: bold;
+            color: #c2185b;
+        }
+
+        /* 日程卡片 */
+        .day-card {
+            background: white;
+            border-radius: 20px;
+            margin: 30px 0;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        .day-card:hover {
+            transform: translateY(-3px);
+        }
+        .day-header {
+            padding: 25px 30px;
+            color: white;
+            position: relative;
+        }
+        .day1 .day-header { background: linear-gradient(135deg, #FF6B6B, #ee5a24); }
+        .day2 .day-header { background: linear-gradient(135deg, #4ECDC4, #2ecc71); }
+        .day3 .day-header { background: linear-gradient(135deg, #ec407a, #f48fb1); }
+        .day4 .day-header { background: linear-gradient(135deg, #FF9800, #F44336); }
+        .day5 .day-header { background: linear-gradient(135deg, #42A5F5, #7E57C2); }
+
+        .day-header h2 {
+            font-size: 1.6em;
+            margin-bottom: 5px;
+        }
+        .day-header .subtitle {
+            opacity: 0.9;
+            font-size: 1em;
+        }
+        .day-body {
+            padding: 25px 30px;
+        }
+
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 5px;
+            bottom: 5px;
+            width: 3px;
+            background: linear-gradient(to bottom, #ec407a, #ab47bc, #7e57c2);
+            border-radius: 3px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            background: #fafafa;
+            border-radius: 12px;
+            border-left: 3px solid #ec407a;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 18px;
+            width: 12px;
+            height: 12px;
+            background: #ec407a;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #ec407a;
+        }
+        .timeline-item .time {
+            font-weight: bold;
+            color: #ec407a;
+            font-size: 0.9em;
+        }
+        .timeline-item .activity {
+            font-weight: bold;
+            font-size: 1.05em;
+            margin: 3px 0;
+        }
+        .timeline-item .note {
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        /* 景点介绍 */
+        .spot-info {
+            background: linear-gradient(135deg, #fff9c4, #fff3e0);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #FFB300;
+        }
+        .spot-info h3 {
+            color: #e65100;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .spot-info p {
+            color: #555;
+            margin-bottom: 8px;
+        }
+        .spot-info .highlight {
+            background: #FFB300;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        /* 美食表格 */
+        .food-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .food-table th {
+            background: linear-gradient(135deg, #ec407a, #f48fb1);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border-radius: 0;
+        }
+        .food-table th:first-child { border-radius: 10px 0 0 0; }
+        .food-table th:last-child { border-radius: 0 10px 0 0; }
+        .food-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+        .food-table tr:hover td {
+            background: #fce4ec;
+        }
+
+        /* 灯会特别区域 */
+        .lantern-section {
+            background: linear-gradient(135deg, #1a0000, #4a0000);
+            color: #ffd54f;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .lantern-section::before {
+            content: '🏮🏮🏮';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2em;
+            opacity: 0.5;
+        }
+        .lantern-section h3 {
+            color: #ff6f00;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255,111,0,0.5);
+        }
+        .lantern-section p {
+            color: #ffcc80;
+            margin-bottom: 10px;
+        }
+        .lantern-route {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .lantern-route .stop {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .lantern-route .stop:last-child {
+            border-bottom: none;
+        }
+        .lantern-route .stop-icon {
+            font-size: 1.5em;
+            margin-right: 12px;
+            min-width: 35px;
+            text-align: center;
+        }
+        .lantern-route .stop-name {
+            font-weight: bold;
+            color: #ffd54f;
+        }
+        .lantern-route .stop-desc {
+            color: #ffcc80;
+            font-size: 0.9em;
+        }
+        .lantern-route .arrow {
+            text-align: center;
+            color: #ff6f00;
+            font-size: 1.2em;
+            padding: 2px 0;
+        }
+
+        /* 花期图表 */
+        .bloom-chart {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .bloom-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .bloom-label {
+            width: 80px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .bloom-track {
+            flex: 1;
+            height: 25px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .bloom-fill {
+            position: absolute;
+            height: 100%;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            color: white;
+            font-weight: bold;
+        }
+        .bloom-fill.meihua {
+            left: 10%;
+            width: 45%;
+            background: linear-gradient(90deg, #f48fb1, #ec407a);
+        }
+        .bloom-fill.zaoying {
+            left: 25%;
+            width: 40%;
+            background: linear-gradient(90deg, #f8bbd0, #f06292);
+        }
+        .bloom-fill.wanying {
+            left: 50%;
+            width: 40%;
+            background: linear-gradient(90deg, #ce93d8, #ab47bc);
+        }
+        .bloom-marker {
+            position: absolute;
+            left: 15%;
+            top: 0;
+            bottom: 0;
+            width: 20%;
+            border: 2px dashed #FF5722;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        .bloom-marker-label {
+            position: absolute;
+            top: -18px;
+            left: 15%;
+            font-size: 0.7em;
+            color: #FF5722;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* 预算表 */
+        .budget-section {
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin: 30px 0;
+        }
+        .budget-section h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #c8e6c9;
+        }
+        .budget-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0 5px;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2e7d32;
+            border-top: 2px solid #2e7d32;
+            margin-top: 5px;
+        }
+
+        /* 浪漫贴士 */
+        .romantic-tips {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin: 30px 0;
+        }
+        .romantic-tips h2 {
+            color: #c2185b;
+            margin-bottom: 15px;
+        }
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 0;
+        }
+        .tip-icon {
+            font-size: 1.8em;
+            margin-right: 15px;
+            min-width: 40px;
+        }
+        .tip-text {
+            color: #880e4f;
+        }
+        .tip-text strong {
+            color: #c2185b;
+        }
+
+        /* 实用信息 */
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        .info-section h2 {
+            color: #5c6bc0;
+            margin-bottom: 15px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .info-card {
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .info-card h4 {
+            color: #5c6bc0;
+            margin-bottom: 8px;
+        }
+        .info-card p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* 地图示意 */
+        .map-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        .map-section h2 {
+            color: #00897b;
+            margin-bottom: 15px;
+        }
+        .map-container {
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            min-height: 400px;
+            font-size: 0.85em;
+        }
+        .map-point {
+            position: absolute;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .map-point:hover {
+            transform: scale(1.2);
+        }
+        .map-point .pin {
+            font-size: 1.8em;
+        }
+        .map-point .name {
+            background: white;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 0.9em;
+        }
+        .footer .heart {
+            color: #ec407a;
+            font-size: 1.5em;
+            animation: heartbeat 1.5s infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin: 2px;
+        }
+        .tag-pink { background: #fce4ec; color: #c2185b; }
+        .tag-orange { background: #fff3e0; color: #e65100; }
+        .tag-green { background: #e8f5e9; color: #2e7d32; }
+        .tag-blue { background: #e3f2fd; color: #1565c0; }
+        .tag-purple { background: #f3e5f5; color: #7b1fa2; }
+        .tag-red { background: #ffebee; color: #c62828; }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8em; }
+            .day-body { padding: 15px; }
+            .overview-grid { grid-template-columns: 1fr 1fr; }
+            .map-container { font-size: 0.7em; min-height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部横幅 -->
+    <div class="hero">
+        <h1>🌸 南京浪漫之旅 🏮</h1>
+        <p>2026.02.28 — 03.04 ｜ 梅花 · 灯会 · 与你同行</p>
+    </div>
+
+    <div class="container">
+
+        <!-- 旅行概览 -->
+        <div class="overview-card">
+            <h2>📋 旅行概览</h2>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="icon">📅</div>
+                    <div class="label">旅行日期</div>
+                    <div class="value">2.28 - 3.4（5天4晚）</div>
+                </div>
+                <div class="overview-item">
+                    <div class="icon">🚄</div>
+                    <div class="label">抵达</div>
+                    <div class="value">12:09 南京南站</div>
+                </div>
+                <div class="overview-item">
+                    <div class="icon">🚄</div>
+                    <div class="label">返程</div>
+                    <div class="value">14:38 南京站</div>
+                </div>
+                <div class="overview-item">
+                    <div class="icon">🏨</div>
+                    <div class="label">酒店</div>
+                    <div class="value">鼓楼区湖南路乐业村7号</div>
+                </div>
+                <div class="overview-item">
+                    <div class="icon">🌸</div>
+                    <div class="label">赏花</div>
+                    <div class="value">梅花盛花期！</div>
+                </div>
+                <div class="overview-item">
+                    <div class="icon">🏮</div>
+                    <div class="label">元宵灯会</div>
+                    <div class="value">3.3晚秦淮灯会</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 景点地图 -->
+        <div class="map-section">
+            <h2>🗺️ 景点分布示意</h2>
+            <div class="map-container">
+                <!-- 紫金山区域 -->
+                <div class="map-point" style="top: 8%; right: 15%;">
+                    <div class="pin">⛰️</div>
+                    <div class="name">紫金山</div>
+                </div>
+                <div class="map-point" style="top: 22%; right: 20%;">
+                    <div class="pin">🌺</div>
+                    <div class="name">梅花山</div>
+                </div>
+                <div class="map-point" style="top: 18%; right: 8%;">
+                    <div class="pin">🏯</div>
+                    <div class="name">明孝陵</div>
+                </div>
+                <div class="map-point" style="top: 30%; right: 15%;">
+                    <div class="pin">🕊️</div>
+                    <div class="name">音乐台</div>
+                </div>
+                <!-- 玄武湖 -->
+                <div class="map-point" style="top: 18%; left: 25%;">
+                    <div class="pin">🌊</div>
+                    <div class="name">玄武湖</div>
+                </div>
+                <!-- 酒店 -->
+                <div class="map-point" style="top: 30%; left: 18%;">
+                    <div class="pin">🏨</div>
+                    <div class="name" style="background:#ec407a;color:white;">酒店（湖南路）</div>
+                </div>
+                <!-- 鸡鸣寺 -->
+                <div class="map-point" style="top: 32%; left: 38%;">
+                    <div class="pin">🌸</div>
+                    <div class="name">鸡鸣寺·樱花</div>
+                </div>
+                <!-- 颐和路 -->
+                <div class="map-point" style="top: 40%; left: 12%;">
+                    <div class="pin">🏛️</div>
+                    <div class="name">颐和路</div>
+                </div>
+                <!-- 先锋书店 -->
+                <div class="map-point" style="top: 50%; left: 15%;">
+                    <div class="pin">📚</div>
+                    <div class="name">先锋书店</div>
+                </div>
+                <!-- 新街口 -->
+                <div class="map-point" style="top: 55%; left: 35%;">
+                    <div class="pin">🛍️</div>
+                    <div class="name">新街口</div>
+                </div>
+                <!-- 夫子庙 -->
+                <div class="map-point" style="top: 72%; left: 40%;">
+                    <div class="pin">🏮</div>
+                    <div class="name" style="background:#FF6F00;color:white;">夫子庙·秦淮灯会</div>
+                </div>
+                <!-- 老门东 -->
+                <div class="map-point" style="top: 80%; left: 30%;">
+                    <div class="pin">🏮</div>
+                    <div class="name">老门东</div>
+                </div>
+                <!-- 南京站 -->
+                <div class="map-point" style="top: 8%; left: 20%;">
+                    <div class="pin">🚉</div>
+                    <div class="name">南京站</div>
+                </div>
+                <!-- 南京南站 -->
+                <div class="map-point" style="bottom: 5%; left: 30%;">
+                    <div class="pin">🚉</div>
+                    <div class="name">南京南站</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 1 -->
+        <div class="day-card day1">
+            <div class="day-header">
+                <h2>Day 1 · 2月28日（周六）</h2>
+                <div class="subtitle">🍽️ 初到金陵 · 书店探秘 · 夜市寻味</div>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">12:09</div>
+                        <div class="activity">🚄 抵达南京南站</div>
+                        <div class="note">出站后乘地铁1号线</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:09 - 12:50</div>
+                        <div class="activity">🚇 前往酒店</div>
+                        <div class="note">地铁1号线到玄武门站，步行约10分钟</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:50 - 14:00</div>
+                        <div class="activity">🏨 入住 + 午餐</div>
+                        <div class="note">推荐狮子桥美食街就近用餐</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:30 - 17:00</div>
+                        <div class="activity">📚 先锋书店（五台山总店）</div>
+                        <div class="note">广州路173号，"中国最美书店"</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">17:30 - 21:00</div>
+                        <div class="activity">🌙 老门东夜市</div>
+                        <div class="note">🔥 肉蛋堡 + 爆裂肠 + 鸭血粉丝汤</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">21:00 - 21:40</div>
+                        <div class="activity">🚇 返回酒店休息</div>
+                        <div class="note">好好休息，明天继续浪漫之旅</div>
+                    </div>
+                </div>
+
+                <div class="spot-info">
+                    <h3>📚 先锋书店</h3>
+                    <p>被CNN评为<strong>"中国最美书店"</strong>，由地下防空洞改造而成。巨大的十字架书架、暖黄灯光、满墙的书籍，每一处都是浪漫的拍照背景。</p>
+                    <p>
+                        <span class="tag tag-pink">🎫 免费</span>
+                        <span class="tag tag-orange">⏱ 1.5-2小时</span>
+                        <span class="tag tag-purple">📮 可寄明信片</span>
+                    </p>
+                    <p>💡 <strong>推荐：</strong>一起写一张明信片，寄给一年后的彼此</p>
+                </div>
+
+                <h3 style="margin: 20px 0 10px; color: #e65100;">🔥 老门东夜市必吃清单</h3>
+                <table class="food-table">
+                    <thead>
+                        <tr><th>美食</th><th>推荐</th><th>价格</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>🥚 肉蛋堡</td><td>入口处小摊（排队最长的）</td><td>~10元</td></tr>
+                        <tr><td>🌭 爆裂肠</td><td>街区内多家</td><td>~15-20元</td></tr>
+                        <tr><td>🦆 鸭血粉丝汤</td><td>小潘记/回味</td><td>~18-22元</td></tr>
+                        <tr><td>🧁 桂花糖芋苗</td><td>甜品摊</td><td>~10元</td></tr>
+                        <tr><td>🫘 赤豆元宵</td><td>传统小吃摊</td><td>~8元</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Day 2 -->
+        <div class="day-card day2">
+            <div class="day-header">
+                <h2>Day 2 · 3月1日（周日）</h2>
+                <div class="subtitle">🌊 玄武湖赏春 · 鸡鸣寺探樱 · 台城揽胜</div>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">8:30 - 9:00</div>
+                        <div class="activity">🍜 早餐</div>
+                        <div class="note">小馄饨 + 烧饼，南京味道</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">9:00 - 9:15</div>
+                        <div class="activity">🚶 步行至玄武湖</div>
+                        <div class="note">酒店距玄武门入口仅1.2km</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">9:15 - 12:30</div>
+                        <div class="activity">🌊 玄武湖公园</div>
+                        <div class="note">环湖游览 · 樱洲赏早樱 · 览胜楼登高</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:30 - 13:30</div>
+                        <div class="activity">🍽 午餐</div>
+                        <div class="note">鸡鸣寺附近餐厅</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">13:30 - 15:30</div>
+                        <div class="activity">🌸 鸡鸣寺 · 樱花大道</div>
+                        <div class="note">早樱可能已初开，寺内祈福</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">15:30 - 17:00</div>
+                        <div class="activity">🏛️ 明城墙（台城段）</div>
+                        <div class="note">城墙上俯瞰玄武湖全景，超级浪漫</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:30 - 21:00</div>
+                        <div class="activity">🛍️ 新街口晚餐 + 逛街</div>
+                        <div class="note">德基广场，南京最繁华商圈</div>
+                    </div>
+                </div>
+
+                <div class="spot-info">
+                    <h3>🌊 玄武湖公园</h3>
+                    <p>中国仅存的江南皇家园林，五洲错落于湖中。2月底早梅绽放、柳芽初萌，春意渐浓。</p>
+                    <p>
+                        <span class="tag tag-green">🎫 免费</span>
+                        <span class="tag tag-blue">⏱ 3-3.5小时</span>
+                        <span class="tag tag-pink">🚣 可划船</span>
+                    </p>
+                    <p><strong>推荐路线：</strong>玄武门 → 环洲 → 樱洲 → 梁洲（览胜楼）→ 翠洲</p>
+                </div>
+
+                <div class="spot-info">
+                    <h3>🌸 鸡鸣寺 · 樱花大道</h3>
+                    <p>"南朝四百八十寺，多少楼台烟雨中" —— 南京最古老的梵刹，寺前樱花大道是全城最著名的赏樱地标。</p>
+                    <p>
+                        <span class="tag tag-orange">🎫 10元（含三柱香）</span>
+                        <span class="tag tag-pink">🌸 早樱初开期</span>
+                    </p>
+                    <p>💡 从鸡鸣寺可直接登<strong>台城城墙</strong>，城墙上远眺玄武湖+紫金山，是南京最美的风景之一。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 3 -->
+        <div class="day-card day3">
+            <div class="day-header">
+                <h2>Day 3 · 3月2日（周一）</h2>
+                <div class="subtitle">🌺 梅花山赏梅 · 明孝陵朝圣 · 音乐台喂鸽子</div>
+                <span class="tag tag-red" style="margin-top: 8px; display: inline-block;">⭐ 本次旅行核心重头戏！</span>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">7:30 - 8:00</div>
+                        <div class="activity">🍜 早起早餐</div>
+                        <div class="note">早出发避开人流</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">8:00 - 8:40</div>
+                        <div class="activity">🚇 前往梅花山</div>
+                        <div class="note">地铁2号线苜蓿园站 → 景区接驳</div>
+                    </div>
+                    <div class="timeline-item" style="border-left-color: #e91e63; background: #fce4ec;">
+                        <div class="time">8:40 - 11:30</div>
+                        <div class="activity">🌺 梅花山 + 梅花谷 ⭐</div>
+                        <div class="note">🔥 盛花期！万株梅花竞相绽放！天下第一梅山！</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">11:30 - 13:30</div>
+                        <div class="activity">🏯 明孝陵</div>
+                        <div class="note">世界文化遗产 · 石象路神道</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">13:30 - 14:00</div>
+                        <div class="activity">🍽 午餐</div>
+                        <div class="note">景区内简餐</div>
+                    </div>
+                    <div class="timeline-item" style="border-left-color: #9c27b0; background: #f3e5f5;">
+                        <div class="time">14:00 - 15:30</div>
+                        <div class="activity">🕊️ 音乐台</div>
+                        <div class="note">💕 和女朋友一起喂鸽子！超浪漫！</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">15:30 - 17:00</div>
+                        <div class="activity">🌿 中山陵园漫步</div>
+                        <div class="note">石象路 · 神道 · 悠闲散步</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:30 - 20:30</div>
+                        <div class="activity">🍽 南京大牌档晚餐</div>
+                        <div class="note">推荐湖南路店/德基店</div>
+                    </div>
+                </div>
+
+                <div class="spot-info" style="background: linear-gradient(135deg, #fce4ec, #f8bbd0); border-left-color: #e91e63;">
+                    <h3>🌺 梅花山 —— 天下第一梅山</h3>
+                    <p>🏆 中国四大梅园之首！植梅面积1533亩，梅树<strong>35000余株</strong>，品种<strong>360余种</strong>。</p>
+                    <p>✅ <strong>2月底-3月初正是梅花山最佳观赏期！你们来的时间完美！</strong></p>
+                    <p><strong>赏梅路线：</strong>南门入口 → 梅花谷（花最密） → 博爱阁（制高点·俯瞰花海） → 东片区（幽静·适合拍照）→ 明孝陵方向出</p>
+                    <br>
+                    <p><strong>梅花品种：</strong></p>
+                    <table class="food-table">
+                        <thead><tr><th>品种</th><th>颜色</th><th>特点</th></tr></thead>
+                        <tbody>
+                            <tr><td>🤍 玉蝶梅</td><td>白色</td><td>素雅高洁</td></tr>
+                            <tr><td>💗 宫粉梅</td><td>粉色</td><td>最浪漫，数量最多</td></tr>
+                            <tr><td>❤️ 朱砂梅</td><td>深红</td><td>热烈浓艳</td></tr>
+                            <tr><td>💚 绿萼梅</td><td>绿白色</td><td>珍稀品种</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="spot-info">
+                    <h3>🏯 明孝陵</h3>
+                    <p>明太祖朱元璋与马皇后的合葬陵墓，<strong>世界文化遗产</strong>。神道两侧石像路千年古木参天。</p>
+                    <p>
+                        <span class="tag tag-orange">🎫 套票70元</span>
+                        <span class="tag tag-blue">⏱ 1.5-2小时</span>
+                    </p>
+                    <p><strong>路线：</strong>下马坊 → 大金门 → 石象路🔥 → 翁仲路 → 文武方门 → 享殿 → 明楼 → 宝顶</p>
+                </div>
+
+                <div class="spot-info" style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); border-left-color: #9c27b0;">
+                    <h3>🕊️ 音乐台 —— 最浪漫的打卡地</h3>
+                    <p>半圆形露天草坪 + 回音壁 + <strong>成群白鸽</strong>。和女朋友一起喂鸽子，阳光洒下，鸽子在身边飞舞——</p>
+                    <p><strong>💕 这将是旅途中最美的画面！</strong></p>
+                    <p>
+                        <span class="tag tag-purple">🕊️ 鸽食约5-10元</span>
+                        <span class="tag tag-pink">📷 鸽子飞起瞬间超出片</span>
+                        <span class="tag tag-blue">⏱ 1-1.5小时</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 4 - 灯会 -->
+        <div class="day-card day4">
+            <div class="day-header">
+                <h2>Day 4 · 3月3日（周二）</h2>
+                <div class="subtitle">🏮 秦淮风月 · 元宵灯会 · 最浪漫的夜晚</div>
+                <span class="tag" style="background:rgba(255,255,255,0.3);color:white;margin-top:8px;display:inline-block;">正月十四 · 灯会最高潮之夜</span>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">9:00 - 9:30</div>
+                        <div class="activity">😴 睡到自然醒 + 早午餐</div>
+                        <div class="note">为晚上灯会养精蓄锐</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">10:00 - 12:00</div>
+                        <div class="activity">🏛️ 颐和路民国风情街区</div>
+                        <div class="note">最美街区 · 民国别墅群 · 咖啡馆</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">13:30 - 15:30</div>
+                        <div class="activity">🛍️ 新街口逛街购物</div>
+                        <div class="note">德基广场</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">15:30 - 17:00</div>
+                        <div class="activity">🏨 返回酒店休整</div>
+                        <div class="note">换上最好看的衣服！</div>
+                    </div>
+                    <div class="timeline-item" style="border-left-color: #FF6F00; background: #fff3e0;">
+                        <div class="time">17:00 - 17:40</div>
+                        <div class="activity">🚇 前往夫子庙</div>
+                        <div class="note">地铁1号线三山街站</div>
+                    </div>
+                    <div class="timeline-item" style="border-left-color: #F44336; background: #ffebee;">
+                        <div class="time">17:40 - 21:30</div>
+                        <div class="activity">🏮✨ 秦淮灯会·元宵夜游</div>
+                        <div class="note">🔥🔥🔥 全程高能！买花灯·猜灯谜·坐画舫·放河灯</div>
+                    </div>
+                </div>
+
+                <div class="spot-info">
+                    <h3>🏛️ 颐和路民国风情街区</h3>
+                    <p>"一条颐和路，半部民国史" —— 200多栋民国使馆别墅，梧桐掩映，宁静浪漫。</p>
+                    <p>
+                        <span class="tag tag-green">🎫 免费</span>
+                        <span class="tag tag-purple">☕ 精品咖啡馆</span>
+                        <span class="tag tag-pink">📷 拍照圣地</span>
+                    </p>
+                </div>
+
+                <!-- 灯会特别区域 -->
+                <div class="lantern-section">
+                    <h3>🏮 秦淮灯会 · 元宵夜游</h3>
+                    <p>🔥 <strong>"秦淮灯彩甲天下"</strong> —— 始于六朝，1700多年历史，国家级非遗。正月十四"试灯夜"，热闹程度不亚于十五！</p>
+                    
+                    <h4 style="color: #ffd54f; margin: 20px 0 10px;">📍 精华游览路线</h4>
+                    <div class="lantern-route">
+                        <div class="stop">
+                            <div class="stop-icon">🚇</div>
+                            <div>
+                                <div class="stop-name">三山街地铁站</div>
+                                <div class="stop-desc">出发点</div>
+                            </div>
+                        </div>
+                        <div class="arrow">↓</div>
+                        <div class="stop">
+                            <div class="stop-icon">🏮</div>
+                            <div>
+                                <div class="stop-name">老门东入口</div>
+                                <div class="stop-desc">花灯长廊，开始进入灯海</div>
+                            </div>
+                        </div>
+                        <div class="arrow">↓ 步行15分钟</div>
+                        <div class="stop">
+                            <div class="stop-icon">🏰</div>
+                            <div>
+                                <div class="stop-name">中华门瓮城</div>
+                                <div class="stop-desc">登城墙看灯，视角壮观</div>
+                            </div>
+                        </div>
+                        <div class="arrow">↓ 步行10分钟</div>
+                        <div class="stop">
+                            <div class="stop-icon">🌉</div>
+                            <div>
+                                <div class="stop-name">东水关遗址公园</div>
+                                <div class="stop-desc">秦淮河畔灯影，绝美倒影</div>
+                            </div>
+                        </div>
+                        <div class="arrow">↓ 沿河步行15分钟</div>
+                        <div class="stop">
+                            <div class="stop-icon">⭐</div>
+                            <div>
+                                <div class="stop-name">白鹭洲公园</div>
+                                <div class="stop-desc">大型灯组，最震撼！强烈推荐！</div>
+                            </div>
+                        </div>
+                        <div class="arrow">↓ 步行10分钟</div>
+                        <div class="stop">
+                            <div class="stop-icon">🎊</div>
+                            <div>
+                                <div class="stop-name">夫子庙核心区</div>
+                                <div class="stop-desc">人最多·最热闹·小吃最丰富</div>
+                            </div>
+                        </div>
+                        <div class="arrow">↓</div>
+                        <div class="stop">
+                            <div class="stop-icon">🚢</div>
+                            <div>
+                                <div class="stop-name">秦淮河画舫 💕</div>
+                                <div class="stop-desc">水上赏灯，两岸灯火倒映河中 · 约80-120元/人</div>
+                            </div>
+                        </div>
+                        <div class="arrow">↓</div>
+                        <div class="stop">
+                            <div class="stop-icon">🌕</div>
+                            <div>
+                                <div class="stop-name">文德桥赏月</div>
+                                <div class="stop-desc">桥上看月亮，秦淮最佳赏月点</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 style="color: #ffd54f; margin: 20px 0 10px;">🎭 元宵特色体验</h4>
+                    <p>🏮 <strong>买花灯</strong> —— 秦淮荷花灯/兔子灯（20-50元）</p>
+                    <p>🎋 <strong>猜灯谜</strong> —— 夫子庙灯谜长廊</p>
+                    <p>🍡 <strong>吃元宵</strong> —— 推荐奇芳阁/莲湖糕团店</p>
+                    <p>👘 <strong>穿汉服</strong> —— 附近可租，穿汉服逛灯会超有氛围</p>
+                    <p>🪷 <strong>放河灯</strong> —— 秦淮河边放荷花灯祈福</p>
+                </div>
+
+                <div class="spot-info" style="background: #fff3e0; border-left-color: #F44336;">
+                    <h3>⚠️ 元宵夜温馨提示</h3>
+                    <p>👫 <strong>牵紧女朋友的手</strong>，人会非常多，不要走散</p>
+                    <p>📱 手机充满电，提前下载好地图</p>
+                    <p>🧥 夜晚河边风大，多穿一件</p>
+                    <p>💰 注意保管财物</p>
+                    <p>📷 相机准备好，处处是美景！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 5 -->
+        <div class="day-card day5">
+            <div class="day-header">
+                <h2>Day 5 · 3月4日（周三）</h2>
+                <div class="subtitle">💙 依依惜别 · 再见金陵</div>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">8:00 - 9:00</div>
+                        <div class="activity">🍜 自然醒 + 最后的南京早点</div>
+                        <div class="note">好好享受最后一个南京早晨</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">9:00 - 9:30</div>
+                        <div class="activity">📦 收拾行李 · 退房</div>
+                        <div class="note">行李可寄存酒店或随身</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">10:00 - 11:30</div>
+                        <div class="activity">🌸 再访鸡鸣寺或玄武湖</div>
+                        <div class="note">最后的漫步，弥补遗憾</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">11:30 - 12:30</div>
+                        <div class="activity">🍽 午餐</div>
+                        <div class="note">推荐鸡鸣寺素面</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:30 - 13:00</div>
+                        <div class="activity">🚇 前往南京站</div>
+                        <div class="note">酒店到南京站地铁仅1站！约5分钟</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">13:00 - 14:38</div>
+                        <div class="activity">🚉 候车 · 买特产</div>
+                        <div class="note">盐水鸭 · 桂花糕 · 雨花茶</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:38</div>
+                        <div class="activity">🚄 再见南京，带着满满的回忆回家</div>
+                        <div class="note">💕</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 20px 0 10px; color: #5c6bc0;">🎁 南京特产推荐</h3>
+                <table class="food-table">
+                    <thead>
+                        <tr>
+                            <th>特产</th><th>推荐品牌</th><th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>🦆 盐水鸭/板鸭</td><td>韩复兴/桂花鸭</td><td>~40-80元</td></tr>
+                        <tr><td>🧁 桂花糕</td><td>各景区有售</td><td>~15-30元</td></tr>
+                        <tr><td>🍵 雨花茶</td><td>南京特产茶</td><td>~50-200元</td></tr>
+                        <tr><td>🏮 秦淮花灯</td><td>灯会上购买</td><td>~20-50元</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 花期参考 -->
+        <div class="overview-card">
+            <h2>🌸 赏花花期参考</h2>
+            <div class="bloom-chart">
+                <p style="font-size: 0.85em; color: #888; margin-bottom: 15px;">
+                    🔸 你们的旅行时间：2月28日-3月4日 | 
+                    <span style="color: #e91e63; font-weight: bold;">✅ 梅花盛花期 · 完美！</span>
+                </p>
+                <div class="bloom-bar">
+                    <div class="bloom-label">🌺 梅花</div>
+                    <div class="bloom-track">
+                        <div class="bloom-fill meihua">盛花期</div>
+                    </div>
+                </div>
+                <div class="bloom-bar">
+                    <div class="bloom-label">🌸 早樱</div>
+                    <div class="bloom-track">
+                        <div class="bloom-fill zaoying">初开→盛花</div>
+                    </div>
+                </div>
+                <div class="bloom-bar">
+                    <div class="bloom-label">💜 晚樱</div>
+                    <div class="bloom-track">
+                        <div class="bloom-fill wanying">盛花期</div>
+                    </div>
+                </div>
+                <p style="font-size: 0.8em; color: #aaa; margin-top: 10px;">← 2月下旬 ———————— 3月上旬 ———————— 3月中旬 ———————— 3月下旬 →</p>
+            </div>
+        </div>
+
+        <!-- 预算 -->
+        <div class="budget-section">
+            <h2>💰 预算参考（两人）</h2>
+            <div class="budget-item">
+                <span>🚇 市内交通（地铁+公交）</span>
+                <span>约 100-150 元</span>
+            </div>
+            <div class="budget-item">
+                <span>🎫 景点门票</span>
+                <span>约 200-250 元</span>
+            </div>
+            <div class="budget-item">
+                <span>🍽 餐饮（5天）</span>
+                <span>约 800-1200 元</span>
+            </div>
+            <div class="budget-item">
+                <span>🚢 秦淮画舫夜游</span>
+                <span>约 160-240 元</span>
+            </div>
+            <div class="budget-item">
+                <span>🏮 花灯/纪念品</span>
+                <span>约 100-200 元</span>
+            </div>
+            <div class="budget-item">
+                <span>🎁 特产伴手礼</span>
+                <span>约 100-200 元</span>
+            </div>
+            <div class="budget-total">
+                <span>合计（不含住宿和高铁）</span>
+                <span>约 1500-2200 元</span>
+            </div>
+        </div>
+
+        <!-- 实用信息 -->
+        <div class="info-section">
+            <h2>📱 实用信息</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>🚇 地铁速查</h4>
+                    <p>酒店→南京站：1站（约5分钟）</p>
+                    <p>酒店→新街口：约8分钟</p>
+                    <p>酒店→夫子庙：约15分钟</p>
+                    <p>酒店→梅花山：约30分钟</p>
+                    <p>酒店→南京南站：约35分钟</p>
+                </div>
+                <div class="info-card">
+                    <h4>🌤️ 天气穿搭</h4>
+                    <p>气温约 5-15°C，早晚温差大</p>
+                    <p>白天：轻薄羽绒服 + 毛衣</p>
+                    <p>夜晚灯会：厚外套 + 围巾🧣</p>
+                    <p>鞋子：舒适运动鞋</p>
+                    <p>🌂 备伞（春雨绵绵）</p>
+                </div>
+                <div class="info-card">
+                    <h4>📞 实用电话</h4>
+                    <p>旅游咨询：025-52269008</p>
+                    <p>地铁热线：025-51899999</p>
+                    <p>急救：120</p>
+                </div>
+                <div class="info-card">
+                    <h4>💡 小贴士</h4>
+                    <p>Day3梅花山建议早去避人流</p>
+                    <p>Day4灯会人多注意安全</p>
+                    <p>酒店到南京站超近（1站地铁）</p>
+                    <p>可办公交卡或用支付宝乘车</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 浪漫贴士 -->
+        <div class="romantic-tips">
+            <h2>💕 浪漫小贴士</h2>
+            <p style="color: #880e4f; margin-bottom: 15px;">给这趟旅行加满仪式感 ✨</p>
+            <div class="tip-item">
+                <div class="tip-icon">📮</div>
+                <div class="tip-text"><strong>先锋书店</strong> —— 一起写一张明信片，寄给一年后的彼此</div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">🕊️</div>
+                <div class="tip-text"><strong>音乐台</strong> —— 鸽子飞起的瞬间，拍一张最美的合照</div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">🌺</div>
+                <div class="tip-text"><strong>梅花山</strong> —— 在漫天梅花下，说一句最浪漫的话</div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">🏮</div>
+                <div class="tip-text"><strong>秦淮灯会</strong> —— 一起放一盏河灯，许一个共同的愿望</div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">🚢</div>
+                <div class="tip-text"><strong>画舫夜游</strong> —— 十里秦淮，灯火如昼，此生难忘</div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">🌸</div>
+                <div class="tip-text"><strong>鸡鸣寺</strong> —— 一起系一条祈福丝带，许下美好心愿</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+        <p>🌸 南京浪漫之旅 2026 🌸</p>
+        <p class="heart">💕</p>
+        <p>祝你们在南京度过一段难忘的浪漫时光！</p>
+        <p style="margin-top: 15px; font-size: 0.8em;">Made with love ❤️</p>
+    </div>
+
+</body>
+</html>
